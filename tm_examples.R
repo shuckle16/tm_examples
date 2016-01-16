@@ -1,8 +1,8 @@
 #install.packages('tm')
 library(tm)
 
-sci.electronics    <- Corpus(DirSource("~/bzan/3/tm/20news-18828/sci.electronics")) # A corpus with 981 text documents
-talk.religion.misc <- Corpus(DirSource("~/bzan/3/tm/20news-18828/talk.religion.misc")) # A corpus with 628 text documents
+sci.electronics    <- Corpus(DirSource("sci.electronics")) # A corpus with 981 text documents
+talk.religion.misc <- Corpus(DirSource("talk.religion.misc")) # A corpus with 628 text documents
 
 ############################
 #### Text Data Cleaning ####
