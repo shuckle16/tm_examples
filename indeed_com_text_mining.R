@@ -2,8 +2,10 @@ library("RWeka")
 library("tm")
 library("wordcloud")
 
-BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 3))
+BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
 
+
+#which df$stars == 1, etc
 crp <- Corpus(VectorSource(df$text))
 
 crp <- tm_map(crp,tolower)
@@ -18,7 +20,7 @@ tdm <- TermDocumentMatrix(crp, control = list(tokenize = BigramTokenizer))
 
 findFreqTerms(tdm,lowfreq=10)
 
-findAssocs(tdm,terms = "fast paced environment",corlimit = .55)
+findAssocs(tdm,terms = "terrible",corlimit = .55)
 
 inspect(tdm)
 
@@ -26,4 +28,4 @@ inspect(tdm)
 v <- sort(rowSums(as.matrix(tdm)),decreasing=TRUE)
 n <- names(v)
 
-wordcloud(n,v,min.freq=20)
+wordcloud(n,v,min.freq=3)
