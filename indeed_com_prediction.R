@@ -11,6 +11,8 @@ ml <- data.frame(data.matrix(tm:::c.DocumentTermMatrix(sp1,sp2)))
 
 row.names(ml) <- NULL
 
+ml$yr <- c(as.numeric(format(df$date,"%Y")),as.numeric(format(df_loves$date,"%Y")))
+
 y <- as.factor(c(rep(1,sp1$nrow),rep(0,sp2$nrow)))
 
 source_url("https://raw.githubusercontent.com/shuckle16/ml/master/train_test_split.R")
@@ -24,10 +26,10 @@ basetabletest  <- tts$basetabletest
 ytrain         <- tts$ytrain
 ytest          <- tts$ytest
 
-os <- oversample(basetabletrain,ytrain)
+#os <- oversample(basetabletrain,ytrain)
 
-basetabletrain <- os$basetabletrain
-ytrain <- os$ytrain
+#basetabletrain <- os$basetabletrain
+#ytrain <- os$ytrain
 
 rf <- randomForest(ytrain~.,data=basetabletrain,importance=TRUE)
 
