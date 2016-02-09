@@ -1,6 +1,7 @@
 library("RWeka")
 library("tm")
 library("wordcloud")
+library("topicmodels")
 
 BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
 
@@ -17,15 +18,22 @@ crp <- tm_map(crp,removeWords,stopwords("en"))
 crp <- tm_map(crp,PlainTextDocument)
 
 tdm <- TermDocumentMatrix(crp, control = list(tokenize = BigramTokenizer))
+dtm <- DocumentTermMatrix(crp, control = list(tokenize = BigramTokenizer))
 
-findFreqTerms(tdm,lowfreq=10)
+findFreqTerms(dtm,lowfreq=10)
 
-findAssocs(tdm,terms = "terrible",corlimit = .55)
+findAssocs(dtm,terms = "terrible",corlimit = .55)
 
-inspect(tdm)
+inspect(dtm)
 
 
 v <- sort(rowSums(as.matrix(tdm)),decreasing=TRUE)
 n <- names(v)
 
 wordcloud(n,v,min.freq=3)
+
+
+
+l <- LDA(dtm,2)
+
+get_terms(l,10)
