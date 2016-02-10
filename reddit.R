@@ -1,0 +1,48 @@
+library(rvest)
+library(stringr)
+
+pol <- read_html("http://www.reddit.com/r/programming?limit=100")
+iterator <- 1
+
+full <- data.frame(ups=numeric(),titles=character(),title_length=character(),dates=character(),weekday=factor())
+
+while (iterator < 21) {
+   ups <- as.numeric(html_text(html_nodes(pol, ".score.likes")))
+   ups[is.na(ups)] <- 0
+
+   titles <- html_text(html_nodes(pol,"p .title"))
+   title_length <- as.numeric(sapply(titles,FUN=function(x){length(unlist(strsplit(x," ")))}))
+
+   times <- html_attr(html_nodes(pol,".live-timestamp"),"datetime")
+   dates <- as.Date(substr(times,1,10))
+   weekday <- weekdays(dates)
+   
+   full <- rbind(full,data.frame(ups,titles,title_length,dates,weekday))
+   
+   next_page <- html_attr(html_nodes(pol,".nextprev a"),"href")
+   pol <- read_html(next_page[length(next_page)])
+   iterator <- iterator + 1
+}
+
+library(tm)
+library(topicmodels)
+
+crp <- Corpus(VectorSource(full$titles))
+
+crp <- tm_map(crp,removePunctuation)
+crp <- tm_map(crp,tolower)
+crp <- tm_map(crp,removeWords,stopwords("en"))
+crp <- tm_map(crp,removeWords,c("the","are"))
+
+crp <- tm_map(crp,PlainTextDocument)
+
+l <- LDA(DocumentTermMatrix(crp),3)
+
+get_terms(l,5)
+
+
+tbl <- colSums(as.matrix(DocumentTermMatrix(crp)))
+
+barplot(head(tbl[order(tbl,decreasing=TRUE)],10),las=2)
+
+
