@@ -1,7 +1,16 @@
+# basic topic modeling on specified subreddit
+
+
 library(rvest)
 library(stringr)
+library(tm)
+library(topicmodels)
 
-pol <- read_html("http://www.reddit.com/r/programming?limit=100")
+sr <- "programming"
+url <- paste("http://www.reddit.com/r/",sr,"?limit=100",sep="")
+
+
+pol <- read_html(url)
 iterator <- 1
 
 full <- data.frame(ups=numeric(),titles=character(),title_length=character(),dates=character(),weekday=factor())
@@ -24,8 +33,6 @@ while (iterator < 21) {
    iterator <- iterator + 1
 }
 
-library(tm)
-library(topicmodels)
 
 crp <- Corpus(VectorSource(full$titles))
 
