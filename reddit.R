@@ -46,7 +46,7 @@ crp <- tm_map(crp,PlainTextDocument)
 
 BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
 
-dtm <- DocumentTermMatrix(crp,control=list(tokenize=BigramTokenizer)
+dtm <- DocumentTermMatrix(crp,control=list(tokenize=BigramTokenizer))
 
 l <- LDA(dtm,3)
 
