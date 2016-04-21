@@ -43,7 +43,11 @@ crp <- tm_map(crp,removeWords,c("the","are"))
 
 crp <- tm_map(crp,PlainTextDocument)
 
-l <- LDA(DocumentTermMatrix(crp),3)
+BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
+
+dtm <- DocumentTermMatrix(crp,control=list(tokenize=BigramTokenizer)
+
+l <- LDA(dtm,3)
 
 get_terms(l,5)
 
