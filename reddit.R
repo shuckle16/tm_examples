@@ -5,6 +5,7 @@ library(rvest)
 library(stringr)
 library(tm)
 library(topicmodels)
+library(RWeka)
 
 sr <- "programming"
 url <- paste("http://www.reddit.com/r/",sr,"?limit=100",sep="")
