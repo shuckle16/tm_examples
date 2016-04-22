@@ -1,5 +1,5 @@
-library(rvest)
-library(stringr)
+library("rvest")
+library("stringr")
 library("RWeka")
 library("tm")
 library("topicmodels")
